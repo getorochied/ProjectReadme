@@ -1,42 +1,90 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ portfolio.description }}{% endblock %}
+{% block title %}{{ portfolio.description }} - README MiNET{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <h1>Portfolio #{{ portfolio.id }}</h1>
-    
-    <p><strong>Description :</strong> {{ portfolio.description }}</p>
-    
-    <h2>Projets ({{ portfolio.projects|length }})</h2>
-    
-    {% if portfolio.projects|length > 0 %}
-        <ul>
-            {% for project in portfolio.projects %}
-                <li>
-                    <strong>{{ project.title }}</strong>
-                    <br>
-                    {{ project.description }}
-                    <br>
-                    Statut : <span style="color: 
-                        {% if project.status == 'completed' %}green
-                        {% elseif project.status == 'in_progress' %}orange
-                        {% else %}red{% endif %}">
-                        {{ project.status }}
-                    </span>
-                    <br>
-                    Début : {{ project.startDate ? project.startDate|date('d/m/Y') : 'Non défini' }}
-                    {% if project.endDate %}
-                        - Fin : {{ project.endDate|date('d/m/Y') }}
-                    {% endif %}
-                </li>
-                <br>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>Aucun projet dans ce portfolio.</p>
-    {% endif %}
-    
-    <a href="{{ path('app_portfolio_index') }}">← Retour à la liste</a>
-</div>
+<!-- Portfolio Details Section-->
+<section class="page-section portfolio" id="portfolio">
+    <div class="container">
+        <!-- Portfolio Section Heading-->
+        <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Portfolio #{{ portfolio.id }}</h2>
+        <div class="divider-custom">
+            <div class="divider-custom-line"></div>
+            <div class="divider-custom-icon"><i class="fas fa-folder-open"></i></div>
+            <div class="divider-custom-line"></div>
+        </div>
+        
+        <!-- Description -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h4 class="text-muted">{{ portfolio.description }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Projects Heading -->
+        <h3 class="text-center text-uppercase text-secondary mb-4">
+            <i class="fas fa-project-diagram"></i> 
+            Projets ({{ portfolio.projects|length }})
+        </h3>
+        
+        <!-- Projects List -->
+        {% if portfolio.projects|length > 0 %}
+            <div class="row">
+                {% for project in portfolio.projects %}
+                    <div class="col-lg-6 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    {{ project.title }}
+                                    {% if project.status == 'completed' %}
+                                        <span class="badge bg-success">✓ Terminé</span>
+                                    {% elseif project.status == 'in_progress' %}
+                                        <span class="badge bg-warning text-dark">🔄 En cours</span>
+                                    {% elseif project.status == 'on_hold' %}
+                                        <span class="badge bg-secondary">⏸ En pause</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">⚪ Pas commencé</span>
+                                    {% endif %}
+                                </h5>
+                                
+                                <p class="card-text text-muted">{{ project.description }}</p>
+                                
+                                <hr>
+                                
+                                <p class="mb-1">
+                                    <i class="far fa-calendar"></i> 
+                                    <strong>Début :</strong> 
+                                    {{ project.startDate ? project.startDate|date('d/m/Y') : 'Non défini' }}
+                                </p>
+                                
+                                {% if project.endDate %}
+                                    <p class="mb-0">
+                                        <i class="far fa-calendar-check"></i> 
+                                        <strong>Fin :</strong> 
+                                        {{ project.endDate|date('d/m/Y') }}
+                                    </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info text-center" role="alert">
+                <i class="fas fa-info-circle"></i> Aucun projet dans ce portfolio pour le moment.
+            </div>
+        {% endif %}
+        
+        <!-- Back Button -->
+        <div class="text-center mt-5">
+            <a href="{{ path('app_portfolio_index') }}" class="btn btn-primary btn-xl">
+                <i class="fas fa-arrow-left"></i> Retour aux portfolios
+            </a>
+        </div>
+    </div>
+</section>
 {% endblock %}

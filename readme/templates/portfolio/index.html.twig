@@ -1,21 +1,53 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des Portfolios{% endblock %}
+{% block title %}Portfolios - README MiNET{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <h1>Liste des Portfolios MiNET</h1>
-    
-    <ul>
-        {% for portfolio in portfolios %}
-            <li>
-                <a href="{{ path('app_portfolio_show', {'id': portfolio.id}) }}">
-                    <strong>Portfolio #{{ portfolio.id }}</strong> : {{ portfolio.description }}
-                </a>
-                <br>
-                Nombre de projets : {{ portfolio.projects|length }}
-            </li>
-        {% endfor %}
-    </ul>
-</div>
+<!-- Masthead-->
+<header class="masthead bg-primary text-white text-center">
+    <div class="container d-flex align-items-center flex-column">
+        <h1 class="masthead-heading text-uppercase mb-0">Portfolios MiNET</h1>
+        <div class="divider-custom divider-light">
+            <div class="divider-custom-line"></div>
+            <div class="divider-custom-icon"><i class="fas fa-folder"></i></div>
+            <div class="divider-custom-line"></div>
+        </div>
+        <p class="masthead-subheading font-weight-light mb-0">Gérez vos projets avec style</p>
+    </div>
+</header>
+
+<!-- Portfolio Section-->
+<section class="page-section portfolio" id="portfolio">
+    <div class="container">
+        <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Portfolios</h2>
+        <div class="divider-custom">
+            <div class="divider-custom-line"></div>
+            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+            <div class="divider-custom-line"></div>
+        </div>
+        
+        <div class="row justify-content-center">
+            {% for portfolio in portfolios %}
+                <div class="col-md-6 col-lg-4 mb-5">
+                    <div class="portfolio-item mx-auto">
+                        <a href="{{ path('app_portfolio_show', {'id': portfolio.id}) }}" style="text-decoration: none;">
+                            <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
+                                <div class="portfolio-item-caption-content text-center text-white">
+                                    <i class="fas fa-plus fa-3x"></i>
+                                </div>
+                            </div>
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <h4 class="card-title">Portfolio #{{ portfolio.id }}</h4>
+                                    <p class="card-text text-muted">{{ portfolio.description }}</p>
+                                    <p class="text-primary"><i class="fas fa-project-diagram"></i> {{ portfolio.projects|length }} projet(s)</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
 {% endblock %}

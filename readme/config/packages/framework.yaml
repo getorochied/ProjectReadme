@@ -16,9 +16,14 @@ framework:
     #fragments: true
     php_errors:
         log: true
+    
+    assets:
+        base_path: '/startbootstrap-freelancer-gh-pages'
 
 when@test:
     framework:
         test: true
         session:
             storage_factory_id: session.storage.factory.mock_file
+        assets:
+            base_path: '/startbootstrap-freelancer-gh-pages'
