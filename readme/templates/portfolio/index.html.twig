@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Portfolios{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1>Liste des Portfolios MiNET</h1>
+    
+    <ul>
+        {% for portfolio in portfolios %}
+            <li>
+                <a href="{{ path('app_portfolio_show', {'id': portfolio.id}) }}">
+                    <strong>Portfolio #{{ portfolio.id }}</strong> : {{ portfolio.description }}
+                </a>
+                <br>
+                Nombre de projets : {{ portfolio.projects|length }}
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

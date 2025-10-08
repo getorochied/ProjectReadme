@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ portfolio.description }}{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1>Portfolio #{{ portfolio.id }}</h1>
+    
+    <p><strong>Description :</strong> {{ portfolio.description }}</p>
+    
+    <h2>Projets ({{ portfolio.projects|length }})</h2>
+    
+    {% if portfolio.projects|length > 0 %}
+        <ul>
+            {% for project in portfolio.projects %}
+                <li>
+                    <strong>{{ project.title }}</strong>
+                    <br>
+                    {{ project.description }}
+                    <br>
+                    Statut : <span style="color: 
+                        {% if project.status == 'completed' %}green
+                        {% elseif project.status == 'in_progress' %}orange
+                        {% else %}red{% endif %}">
+                        {{ project.status }}
+                    </span>
+                    <br>
+                    Début : {{ project.startDate ? project.startDate|date('d/m/Y') : 'Non défini' }}
+                    {% if project.endDate %}
+                        - Fin : {{ project.endDate|date('d/m/Y') }}
+                    {% endif %}
+                </li>
+                <br>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucun projet dans ce portfolio.</p>
+    {% endif %}
+    
+    <a href="{{ path('app_portfolio_index') }}">← Retour à la liste</a>
+</div>
+{% endblock %}
