@@ -62,11 +62,46 @@
                                 </p>
                                 
                                 {% if project.endDate %}
-                                    <p class="mb-0">
+                                    <p class="mb-2">
                                         <i class="far fa-calendar-check"></i> 
                                         <strong>Fin :</strong> 
                                         {{ project.endDate|date('d/m/Y') }}
                                     </p>
+                                {% endif %}
+                                
+                                <!-- Checklist des tâches -->
+                                {% if project.tasks|length > 0 %}
+                                    <hr>
+                                    <h6><i class="fas fa-tasks"></i> Checklist ({{ project.tasks|length }})</h6>
+                                    
+                                    {% set tasksDone = 0 %}
+                                    {% for task in project.tasks %}
+                                        {% if task.status == 'done' %}
+                                            {% set tasksDone = tasksDone + 1 %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    
+                                    <div class="progress mb-2" style="height: 20px;">
+                                        <div class="progress-bar bg-success" role="progressbar" 
+                                             style="width: {{ (tasksDone / project.tasks|length * 100)|round }}%">
+                                            {{ tasksDone }}/{{ project.tasks|length }}
+                                        </div>
+                                    </div>
+                                    
+                                    <ul class="list-unstyled mb-0">
+                                        {% for task in project.tasks|sort((a, b) => a.orderPosition <=> b.orderPosition) %}
+                                            <li class="mb-1">
+                                                {% if task.status == 'done' %}
+                                                    <i class="fas fa-check-circle text-success"></i>
+                                                {% elseif task.status == 'in_progress' %}
+                                                    <i class="fas fa-spinner text-warning"></i>
+                                                {% else %}
+                                                    <i class="far fa-circle text-muted"></i>
+                                                {% endif %}
+                                                <small>{{ task.title }}</small>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
                                 {% endif %}
                             </div>
                         </div>
