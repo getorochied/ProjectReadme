@@ -15,10 +15,12 @@
 - [x] Ajouter la relation Portfolio → Projects
 - [x] Créer les pages de consultation (liste et détail)
 - [x] Intégrer Bootstrap pour la mise en forme
-- [ ] Créer l'entité Task (checklist)
+- [x] Créer l'entité Task (checklist)
+- [x] Afficher les checklists dans les projets
 - [ ] Créer l'entité Member (utilisateurs)
 - [ ] Créer l'entité Showcase (vitrines publiques)
 - [ ] Ajouter l'authentification
+- [ ] Gérer les contributeurs des projets (Many-to-Many)
 - [ ] Customiser le CSS (thème sombre bleu/noir)
 
 ### Links
