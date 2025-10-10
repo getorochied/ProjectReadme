@@ -1,4 +1,5 @@
 # README - Portfolio des projets MiNET
+[Gustave Beauvallet](https://github.com/getorochied/ProjectReadme)
 
 ## Description du projet
 Application Symfony de gestion de portfolios de projets permettant d'organiser et de présenter des projets avec leurs tâches associées.
