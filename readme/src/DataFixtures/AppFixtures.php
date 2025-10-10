@@ -19,13 +19,13 @@ class AppFixtures extends Fixture
 
         // Portfolio 2 : Web
         $portfolio2 = new Portfolio();
-        $portfolio2->setDescription("Portfolio des projets web");
+        $portfolio2->setDescription("Portfolio des services web");
         $manager->persist($portfolio2);
 
-        // Projet 1 : Serveur NAS
+        // Projet 1 : Serveur de stockage des logs
         $project1 = new Project();
-        $project1->setTitle("Serveur de stockage NAS");
-        $project1->setDescription("Mise en place d'un serveur de stockage pour l'association");
+        $project1->setTitle("Serveur de stockage des logs");
+        $project1->setDescription("Refonte du système de stockage des logs de l'association");
         $project1->setStatus("in_progress");
         $project1->setStartDate(new \DateTime('2025-01-15'));
         $project1->setPortfolio($portfolio1);
@@ -33,8 +33,8 @@ class AppFixtures extends Fixture
 
         // Tasks pour Projet 1
         $task1 = new Task();
-        $task1->setTitle("Acheter le matériel");
-        $task1->setDescription("Commander un Synology DS220+");
+        $task1->setTitle("Acheter des disques");
+        $task1->setDescription("Acheter des disques durs adaptés au stockage des logs");
         $task1->setStatus("done");
         $task1->setOrderPosition(1);
         $task1->setProject($project1);
@@ -81,8 +81,8 @@ class AppFixtures extends Fixture
 
         // Projet 3 : Site web
         $project3 = new Project();
-        $project3->setTitle("Site web MiNET");
-        $project3->setDescription("Refonte complète du site de l'association");
+        $project3->setTitle("MAJ MiNET");
+        $project3->setDescription("Actualisation de l'ensemble de nos services");
         $project3->setStatus("completed");
         $project3->setStartDate(new \DateTime('2024-09-01'));
         $project3->setEndDate(new \DateTime('2024-12-15'));
@@ -91,14 +91,14 @@ class AppFixtures extends Fixture
 
         // Tasks pour Projet 3 (toutes terminées)
         $task6 = new Task();
-        $task6->setTitle("Maquetter le design");
+        $task6->setTitle("Mettre à jour les machines");
         $task6->setStatus("done");
         $task6->setOrderPosition(1);
         $task6->setProject($project3);
         $manager->persist($task6);
 
         $task7 = new Task();
-        $task7->setTitle("Développer le site");
+        $task7->setTitle("Mettre à jour les services");
         $task7->setStatus("done");
         $task7->setOrderPosition(2);
         $task7->setProject($project3);

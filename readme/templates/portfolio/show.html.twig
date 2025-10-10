@@ -41,13 +41,13 @@
                                 <h5 class="card-title">
                                     {{ project.title }}
                                     {% if project.status == 'completed' %}
-                                        <span class="badge bg-success">✓ Terminé</span>
+                                        <span class="badge bg-success">Terminé</span>
                                     {% elseif project.status == 'in_progress' %}
-                                        <span class="badge bg-warning text-dark">🔄 En cours</span>
+                                        <span class="badge bg-warning text-dark">En cours</span>
                                     {% elseif project.status == 'on_hold' %}
-                                        <span class="badge bg-secondary">⏸ En pause</span>
+                                        <span class="badge bg-secondary">En pause</span>
                                     {% else %}
-                                        <span class="badge bg-danger">⚪ Pas commencé</span>
+                                        <span class="badge bg-danger">Pas commencé</span>
                                     {% endif %}
                                 </h5>
                                 
