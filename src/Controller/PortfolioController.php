@@ -10,6 +10,13 @@ use App\Entity\Portfolio;
 
 class PortfolioController extends AbstractController
 {
+    #[Route('/', name: 'app_home')]
+    public function home(): Response
+    {
+        // Redirection vers la liste des portfolios
+        return $this->redirectToRoute('app_portfolio_index');
+    }
+
     #[Route('/portfolio', name: 'app_portfolio_index')]
     public function index(PortfolioRepository $portfolioRepository): Response
     {

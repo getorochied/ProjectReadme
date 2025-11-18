@@ -2,25 +2,64 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\User;
 use App\Entity\Portfolio;
 use App\Entity\Project;
 use App\Entity\Task;
+use App\Entity\Showcase;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
+    private UserPasswordHasherInterface $hasher;
+
+    public function __construct(UserPasswordHasherInterface $hasher)
+    {
+        $this->hasher = $hasher;
+    }
+
+    /**
+     * Generates initialization data for users : [username, email, plain text password]
+     * @return \Generator
+     */
+    private function usersGenerator()
+    {
+        yield ['olivier', 'olivier@localhost', '123456'];
+        yield ['gustave', 'gustave@localhost', '123456'];
+        yield ['alice', 'alice@localhost', '123456'];
+    }
+
     public function load(ObjectManager $manager): void
     {
-        // Portfolio 1 : Infrastructure
-        $portfolio1 = new Portfolio();
-        $portfolio1->setDescription("Portfolio des projets infrastructure");
-        $manager->persist($portfolio1);
-
-        // Portfolio 2 : Web
-        $portfolio2 = new Portfolio();
-        $portfolio2->setDescription("Portfolio des services web");
-        $manager->persist($portfolio2);
+        // Créer les Users avec leurs portfolios personnels
+        $users = [];
+        $portfolios = [];
+        
+        foreach ($this->usersGenerator() as [$username, $email, $plainPassword]) {
+            $user = new User();
+            $password = $this->hasher->hashPassword($user, $plainPassword);
+            $user->setUsername($username);
+            $user->setEmail($email);
+            $user->setPassword($password);
+            
+            // Créer un portfolio personnel pour chaque utilisateur
+            $portfolio = new Portfolio();
+            $portfolio->setDescription("Portfolio personnel de " . $username);
+            $user->setPortfolio($portfolio);
+            
+            $manager->persist($user);
+            $users[$username] = $user;
+            $portfolios[$username] = $portfolio;
+        }
+        
+        $manager->flush();
+        
+        // Utiliser les portfolios personnels des users
+        $portfolio1 = $portfolios['olivier'];  // Portfolio d'Olivier
+        $portfolio2 = $portfolios['gustave'];  // Portfolio de Gustave
+        // $portfolios['alice'] existe aussi mais n'a pas encore de projets
 
         // Projet 1 : Serveur de stockage des logs
         $project1 = new Project();
@@ -29,6 +68,9 @@ class AppFixtures extends Fixture
         $project1->setStatus("in_progress");
         $project1->setStartDate(new \DateTime('2025-01-15'));
         $project1->setPortfolio($portfolio1);
+        // Ajouter les contributeurs
+        $project1->addMember($users['olivier']);
+        $project1->addMember($users['gustave']);
         $manager->persist($project1);
 
         // Tasks pour Projet 1
@@ -62,6 +104,9 @@ class AppFixtures extends Fixture
         $project2->setDescription("Conteneurisation de tous les services MiNET");
         $project2->setStatus("not_started");
         $project2->setPortfolio($portfolio1);
+        // Ajouter les contributeurs
+        $project2->addMember($users['olivier']);
+        $project2->addMember($users['alice']);
         $manager->persist($project2);
 
         // Tasks pour Projet 2
@@ -87,6 +132,8 @@ class AppFixtures extends Fixture
         $project3->setStartDate(new \DateTime('2024-09-01'));
         $project3->setEndDate(new \DateTime('2024-12-15'));
         $project3->setPortfolio($portfolio2);
+        // Ajouter les contributeurs
+        $project3->addMember($users['gustave']);
         $manager->persist($project3);
 
         // Tasks pour Projet 3 (toutes terminées)
@@ -118,6 +165,9 @@ class AppFixtures extends Fixture
         $project4->setStatus("in_progress");
         $project4->setStartDate(new \DateTime('2025-02-01'));
         $project4->setPortfolio($portfolio2);
+        // Ajouter les contributeurs
+        $project4->addMember($users['gustave']);
+        $project4->addMember($users['alice']);
         $manager->persist($project4);
 
         // Tasks pour Projet 4
@@ -141,6 +191,36 @@ class AppFixtures extends Fixture
         $task11->setOrderPosition(3);
         $task11->setProject($project4);
         $manager->persist($task11);
+
+        $manager->flush();
+
+        // Créer des Showcases (galeries)
+        $showcase1 = new Showcase();
+        $showcase1->setTitle("Projets Infrastructure 2025");
+        $showcase1->setDescription("Vitrine des projets d'infrastructure en cours et terminés");
+        $showcase1->setIsPublic(true);
+        $showcase1->setOwner($users['olivier']);
+        $showcase1->addProject($project1);
+        $showcase1->addProject($project2);
+        $manager->persist($showcase1);
+
+        $showcase2 = new Showcase();
+        $showcase2->setTitle("Développement Web");
+        $showcase2->setDescription("Mes projets de développement web et d'APIs");
+        $showcase2->setIsPublic(true);
+        $showcase2->setOwner($users['gustave']);
+        $showcase2->addProject($project3);
+        $showcase2->addProject($project4);
+        $manager->persist($showcase2);
+
+        $showcase3 = new Showcase();
+        $showcase3->setTitle("Projets en cours - Alice");
+        $showcase3->setDescription("Galerie privée de mes projets actuels");
+        $showcase3->setIsPublic(false);
+        $showcase3->setOwner($users['alice']);
+        $showcase3->addProject($project2);
+        $showcase3->addProject($project4);
+        $manager->persist($showcase3);
 
         $manager->flush();
     }

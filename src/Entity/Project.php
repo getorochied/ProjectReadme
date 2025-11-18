@@ -41,9 +41,23 @@ class Project
     #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'project', orphanRemoval: true)]
     private Collection $tasks;
 
+    /**
+     * @var Collection<int, User>
+     */
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'projects')]
+    private Collection $members;
+
+    /**
+     * @var Collection<int, Showcase>
+     */
+    #[ORM\ManyToMany(targetEntity: Showcase::class, mappedBy: 'projects')]
+    private Collection $showcases;
+
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
+        $this->members = new ArrayCollection();
+        $this->showcases = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -148,6 +162,57 @@ class Project
             if ($task->getProject() === $this) {
                 $task->setProject(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getMembers(): Collection
+    {
+        return $this->members;
+    }
+
+    public function addMember(User $member): static
+    {
+        if (!$this->members->contains($member)) {
+            $this->members->add($member);
+        }
+
+        return $this;
+    }
+
+    public function removeMember(User $member): static
+    {
+        $this->members->removeElement($member);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Showcase>
+     */
+    public function getShowcases(): Collection
+    {
+        return $this->showcases;
+    }
+
+    public function addShowcase(Showcase $showcase): static
+    {
+        if (!$this->showcases->contains($showcase)) {
+            $this->showcases->add($showcase);
+            $showcase->addProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeShowcase(Showcase $showcase): static
+    {
+        if ($this->showcases->removeElement($showcase)) {
+            $showcase->removeProject($this);
         }
 
         return $this;

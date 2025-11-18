@@ -40,7 +40,18 @@
                                 <div class="card-body text-center">
                                     <h4 class="card-title">Portfolio #{{ portfolio.id }}</h4>
                                     <p class="card-text text-muted">{{ portfolio.description }}</p>
-                                    <p class="text-primary"><i class="fas fa-project-diagram"></i> {{ portfolio.projects|length }} projet(s)</p>
+                                    
+                                    {% if portfolio.owner %}
+                                        <p class="mb-1">
+                                            <i class="fas fa-user text-info"></i> 
+                                            <span class="badge bg-info">{{ portfolio.owner.username }}</span>
+                                        </p>
+                                    {% endif %}
+                                    
+                                    <p class="text-primary mb-0">
+                                        <i class="fas fa-project-diagram"></i> 
+                                        {{ portfolio.projects|length }} projet(s)
+                                    </p>
                                 </div>
                             </div>
                         </a>

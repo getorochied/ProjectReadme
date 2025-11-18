@@ -1,0 +1,141 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ user.username }} - README MiNET{% endblock %}
+
+{% block body %}
+<!-- User Details Section-->
+<section class="page-section" id="user">
+    <div class="container">
+        <!-- User Section Heading-->
+        <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">
+            <i class="fas fa-user"></i> {{ user.username }}
+        </h2>
+        <div class="divider-custom">
+            <div class="divider-custom-line"></div>
+            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+            <div class="divider-custom-line"></div>
+        </div>
+        
+        <!-- User Info -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th style="width: 30%;">ID</th>
+                                    <td>{{ user.id }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Nom d'utilisateur</th>
+                                    <td>{{ user.username }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Email</th>
+                                    <td>{{ user.email }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Rôles</th>
+                                    <td>
+                                        {% for role in user.roles %}
+                                            <span class="badge bg-info">{{ role }}</span>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Portfolio Personnel Section -->
+        {% if user.portfolio %}
+            <div class="row justify-content-center mb-4">
+                <div class="col-lg-8">
+                    <div class="card shadow border-primary">
+                        <div class="card-header bg-primary text-white">
+                            <h4 class="mb-0">
+                                <i class="fas fa-folder-open"></i> 
+                                Portfolio Personnel
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <p class="lead mb-3">{{ user.portfolio.description }}</p>
+                            
+                            {% if user.portfolio.projects|length > 0 %}
+                                <p class="text-muted mb-2">
+                                    <i class="fas fa-briefcase"></i> 
+                                    {{ user.portfolio.projects|length }} projet(s) dans le portfolio
+                                </p>
+                                <a href="{{ path('app_portfolio_show', {'id': user.portfolio.id}) }}" 
+                                   class="btn btn-primary">
+                                    <i class="fas fa-eye"></i> Voir le portfolio complet
+                                </a>
+                            {% else %}
+                                <p class="text-muted">
+                                    <i class="fas fa-info-circle"></i> 
+                                    Aucun projet dans ce portfolio pour le moment.
+                                </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Projets contributés Section -->
+        {% if user.projects|length > 0 %}
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card shadow">
+                        <div class="card-header bg-info text-white">
+                            <h4 class="mb-0">
+                                <i class="fas fa-users"></i> 
+                                Projets collaboratifs
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <p class="lead">Projets auxquels {{ user.username }} contribue en tant que membre :</p>
+                            <ul class="list-group">
+                                {% for project in user.projects %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <strong>{{ project.title }}</strong>
+                                            <br>
+                                            <small class="text-muted">{{ project.description|slice(0, 80) }}...</small>
+                                        </div>
+                                        <span class="badge 
+                                            {% if project.status == 'completed' %}bg-success
+                                            {% elseif project.status == 'in_progress' %}bg-warning text-dark
+                                            {% else %}bg-secondary{% endif %}">
+                                            {{ project.status }}
+                                        </span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="alert alert-warning text-center">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Ce membre ne contribue à aucun projet pour le moment.
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Navigation -->
+        <div class="text-center mt-5">
+            <a href="{{ path('app_user_index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Retour à la liste des membres
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

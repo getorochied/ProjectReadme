@@ -19,6 +19,12 @@ class Portfolio
     private ?string $description = null;
 
     /**
+     * The owner of this portfolio
+     */
+    #[ORM\OneToOne(mappedBy: 'portfolio')]
+    private ?User $owner = null;
+
+    /**
      * @var Collection<int, Project>
      */
     #[ORM\OneToMany(targetEntity: Project::class, mappedBy: 'portfolio', orphanRemoval: true)]
@@ -72,6 +78,23 @@ class Portfolio
                 $project->setPortfolio(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(User $owner): static
+    {
+        // set the owning side of the relation if necessary
+        if ($owner->getPortfolio() !== $this) {
+            $owner->setPortfolio($this);
+        }
+
+        $this->owner = $owner;
 
         return $this;
     }

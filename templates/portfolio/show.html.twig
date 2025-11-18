@@ -17,9 +17,20 @@
         <!-- Description -->
         <div class="row justify-content-center mb-5">
             <div class="col-lg-8">
-                <div class="card">
-                    <div class="card-body text-center">
-                        <h4 class="text-muted">{{ portfolio.description }}</h4>
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h4 class="text-center mb-3">{{ portfolio.description }}</h4>
+                        
+                        {% if portfolio.owner %}
+                            <div class="alert alert-info text-center mb-0">
+                                <i class="fas fa-user"></i> 
+                                <strong>Propriétaire:</strong>
+                                <a href="{{ path('app_user_show', {'id': portfolio.owner.id}) }}" 
+                                   class="alert-link">
+                                    {{ portfolio.owner.username }}
+                                </a>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -54,6 +65,20 @@
                                 <p class="card-text text-muted">{{ project.description }}</p>
                                 
                                 <hr>
+                                
+                                <!-- Contributeurs -->
+                                {% if project.members|length > 0 %}
+                                    <p class="mb-2">
+                                        <i class="fas fa-users"></i> 
+                                        <strong>Contributeurs :</strong>
+                                        {% for member in project.members %}
+                                            <a href="{{ path('app_user_show', {'id': member.id}) }}" 
+                                               class="badge bg-info text-decoration-none">
+                                                {{ member.username }}
+                                            </a>
+                                        {% endfor %}
+                                    </p>
+                                {% endif %}
                                 
                                 <p class="mb-1">
                                     <i class="far fa-calendar"></i> 
