@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ showcase.title }}{% endblock %}
+
+{% block body %}
+    <div class="container mt-5 pt-5">
+        <div class="row mb-4">
+            <div class="col">
+                <h1 class="display-4">{{ showcase.title }}</h1>
+                {% if showcase.isPublic %}
+                    <span class="badge bg-success fs-5">Public</span>
+                {% else %}
+                    <span class="badge bg-secondary fs-5">Privé</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Description</h5>
+                <p class="card-text">{{ showcase.description }}</p>
+                
+                <hr>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="mb-1"><strong>Propriétaire :</strong> {{ showcase.owner.username }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="mb-1"><strong>Nombre de projets :</strong> {{ showcase.projects|length }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if showcase.projects|length > 0 %}
+            <h2 class="mb-4">Projets de cette showcase</h2>
+            <div class="row">
+                {% for project in showcase.projects %}
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0">{{ project.title }}</h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">{{ project.description }}</p>
+                                <p class="mb-2">
+                                    <span class="badge 
+                                        {% if project.status == 'not_started' %}bg-secondary
+                                        {% elseif project.status == 'in_progress' %}bg-warning text-dark
+                                        {% elseif project.status == 'completed' %}bg-success
+                                        {% elseif project.status == 'on_hold' %}bg-info
+                                        {% else %}bg-dark
+                                        {% endif %}">
+                                        {{ project.status|replace({'_': ' '})|title }}
+                                    </span>
+                                </p>
+                                <small class="text-muted">
+                                    <i class="fas fa-calendar me-1"></i>
+                                    {{ project.startDate ? project.startDate|date('d/m/Y') : 'Non défini' }}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>
+                Aucun projet associé à cette showcase.
+            </div>
+        {% endif %}
+
+        <div class="mt-4 mb-5">
+            <a href="{{ path('app_showcase_index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Retour à la liste
+            </a>
+            <a href="{{ path('app_showcase_edit', {'id': showcase.id}) }}" class="btn btn-primary">
+                <i class="fas fa-edit me-2"></i>Modifier
+            </a>
+            {{ include('showcase/_delete_form.html.twig') }}
+        </div>
+    </div>
+{% endblock %}

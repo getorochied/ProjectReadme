@@ -1,0 +1,36 @@
+{{ form_start(form) }}
+    <div class="mb-3">
+        {{ form_label(form.title) }}
+        {{ form_widget(form.title) }}
+        {{ form_errors(form.title) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.description) }}
+        {{ form_widget(form.description) }}
+        {{ form_errors(form.description) }}
+    </div>
+
+    <div class="mb-3 form-check">
+        {{ form_widget(form.isPublic) }}
+        {{ form_label(form.isPublic) }}
+        {{ form_errors(form.isPublic) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.owner) }}
+        {{ form_widget(form.owner) }}
+        {{ form_errors(form.owner) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.projects) }}
+        {{ form_widget(form.projects) }}
+        {{ form_errors(form.projects) }}
+        <small class="form-text text-muted">Maintenez Ctrl (Cmd sur Mac) pour sélectionner plusieurs projets</small>
+    </div>
+
+    <button class="btn btn-primary btn-lg">
+        <i class="fas fa-save me-2"></i>{{ button_label|default('Enregistrer') }}
+    </button>
+{{ form_end(form) }}

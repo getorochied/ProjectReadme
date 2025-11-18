@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Showcases{% endblock %}
+
+{% block body %}
+    <div class="container mt-5 pt-5">
+        <div class="text-center mb-5">
+            <h1 class="text-uppercase mb-3">Showcases</h1>
+            <p class="lead">Galeries publiques et privées de projets sélectionnés</p>
+        </div>
+
+        <div class="mb-4">
+            <a href="{{ path('app_showcase_new') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-plus me-2"></i>Créer une nouvelle showcase
+            </a>
+        </div>
+
+        {% if showcases|length > 0 %}
+            <div class="row">
+                {% for showcase in showcases %}
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="card-title mb-0">
+                                    {{ showcase.title }}
+                                    {% if showcase.isPublic %}
+                                        <span class="badge bg-success float-end">Public</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary float-end">Privé</span>
+                                    {% endif %}
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">{{ showcase.description|length > 100 ? showcase.description|slice(0, 100) ~ '...' : showcase.description }}</p>
+                                <p class="text-muted mb-0">
+                                    <i class="fas fa-project-diagram me-1"></i>
+                                    {{ showcase.projects|length }} projet(s)
+                                </p>
+                            </div>
+                            <div class="card-footer bg-light">
+                                <a href="{{ path('app_showcase_show', {'id': showcase.id}) }}" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-eye me-1"></i>Voir
+                                </a>
+                                <a href="{{ path('app_showcase_edit', {'id': showcase.id}) }}" class="btn btn-sm btn-outline-secondary">
+                                    <i class="fas fa-edit me-1"></i>Modifier
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>
+                Aucune showcase trouvée. <a href="{{ path('app_showcase_new') }}" class="alert-link">Créer la première</a> !
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,6 +1,6 @@
 # TODO - Suivi du développement
 
-**Progression globale:** 11/19 items OBLIGATOIRES complétés (57.9%)
+**Progression globale:** 12/19 items OBLIGATOIRES complétés (63.2%)
 
 ---
 
@@ -36,12 +36,14 @@
 
 ---
 
-## Phase 2 - CRUD et contextualisation (0/5 - 0% EN ATTENTE)
+## Phase 2 - CRUD et contextualisation (1/5 - 20% EN ATTENTE)
 
-- [ ] **#12** Contrôleur CRUD complet pour Showcase (OBLIGATOIRE)
-  - Générer avec `php bin/console make:crud Showcase`
-  - Méthodes: index, new, show, edit, delete
-  - Formulaires pour création/édition
+- [x] **#12** Contrôleur CRUD complet pour Showcase (OBLIGATOIRE)
+  - Généré avec `php bin/console make:crud Showcase`
+  - Méthodes: index, new, show, edit, delete implémentées
+  - Formulaires pour création/édition avec ShowcaseType
+  - Templates Bootstrap améliorés avec design moderne
+  - Lien ajouté dans la navbar principale
   
 - [ ] **#13** Fonctions CRUD pour Project (OBLIGATOIRE)
   - Ajouter new, edit, delete à ProjectController
@@ -120,7 +122,7 @@
 
 ---
 
-## 📋 Vérification de conformité avec le cahier des charges
+## Vérification de conformité avec le cahier des charges
 
 ### Section 5.2.1 - Entités requises (nomenclature obligatoire)
 - **User** (membre) - `src/Entity/User.php` 
@@ -209,42 +211,6 @@ php bin/console dbal:run-sql "SELECT COUNT(*) FROM showcase"   # Résultat: 3
 
 ---
 
-## Points d'attention
-
-### Relation User ←→ Portfolio IMPLÉMENTÉE
-**Statut:** **COMPLET** (requis par cahier des charges section 5.2.4)
-
-**Code implémenté:**
-```php
-// Dans User.php
-#[ORM\OneToOne(inversedBy: 'owner', cascade: ['persist', 'remove'])]
-#[ORM\JoinColumn(nullable: false)]
-private ?Portfolio $portfolio = null;
-
-// Dans Portfolio.php
-#[ORM\OneToOne(mappedBy: 'portfolio')]
-private ?User $owner = null;
-```
-
-### À implémenter en priorité (Phase 2)
-- ShowcaseController avec CRUD complet
-- ProjectController avec création/édition/suppression
-- Navigation depuis Showcase vers Projects
-- Contextualisation des créations par Portfolio
-
-### Authentification manquante (Phase 3)
-- Pas de formulaire de login/logout
-- Pas de protection des routes
-- Tous les utilisateurs voient les mêmes données
-- Les passwords hashés en fixtures sont prêts mais inutilisés
-
-### Upload d'images (Phase 3)
-- Pas de propriété `imagePath` dans Project
-- VichUploaderBundle à installer ou gestion manuelle
-- Formulaire d'upload à créer
-
----
-
 **Dernière mise à jour:** 18 novembre 2025  
-**Version:** 1.1 - Phase 1 complète  
-**Statut:** 11/11 Phase 1 | 0/5 Phase 2 | 0/3 Phase 3 | 0/6 Bonus
+**Version:** 1.2 - Phase 1 complète + Showcase CRUD (Phase 2 #12)  
+**Statut:** 11/11 Phase 1 | 1/5 Phase 2 | 0/3 Phase 3 | 0/6 Bonus

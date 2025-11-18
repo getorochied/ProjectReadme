@@ -8,7 +8,7 @@
 
 Application Symfony de gestion de portfolios de projets pour l'association MiNET. Permet d'organiser des projets avec leurs tâches, de gérer les contributeurs, et de créer des galeries publiques/privées de projets sélectionnés.
 
-**Statut actuel:** Phase 1 COMPLÈTE (11/11) - 57.9% du projet total
+**Statut actuel:** Phase 1 COMPLÈTE (11/11) + Phase 2 en cours (1/5) - 63.2% du projet total
 
 ---
 
@@ -46,6 +46,8 @@ Application Symfony de gestion de portfolios de projets pour l'association MiNET
 | `/portfolio/{id}` | Détail d'un portfolio (projets + tâches) |
 | `/user` | Liste des utilisateurs |
 | `/user/{id}` | Profil utilisateur avec portfolio personnel |
+| `/showcase` | Liste des showcases (CRUD complet) |
+| `/showcase/{id}` | Détail d'une showcase avec ses projets |
 
 ---
 
@@ -124,11 +126,11 @@ php bin/console cache:clear
 | Phase | Statut | Items |
 |-------|--------|-------|
 | **Phase 1** - Modèle & consultation | 100% | 11/11 |
-| **Phase 2** - CRUD & contextualisation | 0% | 0/5 |
+| **Phase 2** - CRUD & contextualisation | 20% | 1/5 |
 | **Phase 3** - Auth & médias | 0% | 0/3 |
 | **Bonus** - Améliorations | 0% | 0/6 |
 
-**Total:** 11/19 items OBLIGATOIRES (57.9%)
+**Total:** 12/19 items OBLIGATOIRES (63.2%)
 
 ### Phase 1 complétée
 - Toutes les entités créées avec nomenclature correcte
@@ -138,11 +140,17 @@ php bin/console cache:clear
 - Pages de consultation avec Bootstrap
 - Navigation fluide entre entités
 
+### Phase 2 en cours
+✅ **#12 - ShowcaseController CRUD complet** 
+- Routes: /showcase, /showcase/new, /showcase/{id}, /showcase/{id}/edit
+- Formulaire ShowcaseType avec validation
+- Templates Bootstrap modernes
+- Affichage des projets associés
+
 ### Prochaines étapes (Phase 2)
-1. **ShowcaseController CRUD** - `make:crud Showcase`
-2. **ProjectController CRUD** - Ajout new/edit/delete
-3. **Navigation Showcase → Projects** - Routes publiques
-4. **Contextualisation** - Création selon Portfolio/User
+1. **ProjectController CRUD** - Ajout new/edit/delete
+2. **Navigation Showcase → Projects** - Routes publiques
+3. **Contextualisation** - Création selon Portfolio/User
 
 ---
 
@@ -179,9 +187,5 @@ var/
 ---
 
 **Dernière mise à jour:** 18 novembre 2025  
-**Version:** 1.2 - README simplifié, TODO séparé  
-**Auteur:** Gustave Beauvallet
-
-**Dernière mise à jour:** 18 novembre 2025  
-**Version:** 1.2 - README simplifié, TODO séparé  
+**Version:** 1.3 - Phase 2 en cours (Showcase CRUD)  
 **Auteur:** Gustave Beauvallet
