@@ -8,7 +8,7 @@
 
 Application Symfony de gestion de portfolios de projets pour l'association MiNET. Permet d'organiser des projets avec leurs tâches, de gérer les contributeurs, et de créer des galeries publiques/privées de projets sélectionnés.
 
-**Statut actuel:** Phase 1 COMPLÈTE (11/11) + Phase 2 en cours (1/5) - 63.2% du projet total
+**Statut actuel:** Phase 1 COMPLÈTE (11/11) + Phase 2 en cours (2/5) - 68.4% du projet total
 
 ---
 
@@ -44,6 +44,8 @@ Application Symfony de gestion de portfolios de projets pour l'association MiNET
 | `/` | Redirection automatique vers `/portfolio` |
 | `/portfolio` | Liste de tous les portfolios |
 | `/portfolio/{id}` | Détail d'un portfolio (projets + tâches) |
+| `/project` | Liste de tous les projets (CRUD complet) |
+| `/project/{id}` | Détail d'un projet avec membres et tâches |
 | `/user` | Liste des utilisateurs |
 | `/user/{id}` | Profil utilisateur avec portfolio personnel |
 | `/showcase` | Liste des showcases (CRUD complet) |
@@ -126,11 +128,11 @@ php bin/console cache:clear
 | Phase | Statut | Items |
 |-------|--------|-------|
 | **Phase 1** - Modèle & consultation | 100% | 11/11 |
-| **Phase 2** - CRUD & contextualisation | 20% | 1/5 |
+| **Phase 2** - CRUD & contextualisation | 40% | 2/5 |
 | **Phase 3** - Auth & médias | 0% | 0/3 |
 | **Bonus** - Améliorations | 0% | 0/6 |
 
-**Total:** 12/19 items OBLIGATOIRES (63.2%)
+**Total:** 13/19 items OBLIGATOIRES (68.4%)
 
 ### Phase 1 complétée
 - Toutes les entités créées avec nomenclature correcte
@@ -147,10 +149,16 @@ php bin/console cache:clear
 - Templates Bootstrap modernes
 - Affichage des projets associés
 
+✅ **#13 - ProjectController CRUD complet**
+- Routes: /project, /project/new, /project/{id}, /project/{id}/edit
+- Formulaire ProjectType avec 8 champs (dates, statut, membres, showcases)
+- Templates avec grille de cartes et badges de statut
+- Affichage détaillé des membres et tâches
+
 ### Prochaines étapes (Phase 2)
-1. **ProjectController CRUD** - Ajout new/edit/delete
-2. **Navigation Showcase → Projects** - Routes publiques
-3. **Contextualisation** - Création selon Portfolio/User
+1. **Navigation Showcase → Projects** - Routes publiques (#14)
+2. **Filtrage utilisateur** - Portfolios par User (#15)
+3. **Contextualisation** - Création selon Portfolio (#16)
 
 ---
 
@@ -187,5 +195,5 @@ var/
 ---
 
 **Dernière mise à jour:** 18 novembre 2025  
-**Version:** 1.3 - Phase 2 en cours (Showcase CRUD)  
+**Version:** 1.4 - Phase 2 à 40% (Showcase + Project CRUD)  
 **Auteur:** Gustave Beauvallet

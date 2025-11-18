@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ project.title }}{% endblock %}
+
+{% block body %}
+    <div class="container mt-5 pt-5">
+        <div class="row mb-4">
+            <div class="col">
+                <h1 class="display-4">{{ project.title }}</h1>
+                <span class="badge {% if project.status == 'not_started' %}bg-secondary{% elseif project.status == 'in_progress' %}bg-warning text-dark{% elseif project.status == 'completed' %}bg-success{% elseif project.status == 'on_hold' %}bg-info{% else %}bg-dark{% endif %} fs-5">
+                    {{ project.status|replace({'_': ' '})|title }}
+                </span>
+            </div>
+        </div>
+
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Description</h5>
+                <p class="card-text">{{ project.description }}</p>
+                
+                <hr>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <p class="mb-1"><strong>Portfolio :</strong> {{ project.portfolio.description }}</p>
+                        <p class="mb-1"><strong>Date de début :</strong> {{ project.startDate ? project.startDate|date('d/m/Y') : 'Non défini' }}</p>
+                        <p class="mb-0"><strong>Date de fin :</strong> {{ project.endDate ? project.endDate|date('d/m/Y') : 'Non défini' }}</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <p class="mb-1"><strong>Membres :</strong> {{ project.members|length }}</p>
+                        <p class="mb-0"><strong>Tâches :</strong> {{ project.tasks|length }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if project.members|length > 0 %}
+            <h2 class="mb-3">Membres du projet</h2>
+            <div class="row mb-4">
+                {% for member in project.members %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-title">
+                                    <i class="fas fa-user me-2"></i>{{ member.username }}
+                                </h6>
+                                <p class="card-text small text-muted mb-0">{{ member.email }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if project.tasks|length > 0 %}
+            <h2 class="mb-3">Tâches</h2>
+            <div class="list-group mb-4">
+                {% for task in project.tasks|sort((a, b) => a.orderPosition <=> b.orderPosition) %}
+                    <div class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between align-items-center">
+                            <h6 class="mb-1">
+                                {% if task.completed %}
+                                    <i class="fas fa-check-circle text-success me-2"></i>
+                                {% else %}
+                                    <i class="far fa-circle text-secondary me-2"></i>
+                                {% endif %}
+                                {{ task.title }}
+                            </h6>
+                            <span class="badge {{ task.completed ? 'bg-success' : 'bg-secondary' }}">
+                                {{ task.completed ? 'Terminée' : 'En cours' }}
+                            </span>
+                        </div>
+                        {% if task.description %}
+                            <p class="mb-0 text-muted small">{{ task.description }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="mt-4 mb-5">
+            <a href="{{ path('app_project_index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Retour à la liste
+            </a>
+            <a href="{{ path('app_project_edit', {'id': project.id}) }}" class="btn btn-primary">
+                <i class="fas fa-edit me-2"></i>Modifier
+            </a>
+        </div>
+    </div>
+{% endblock %}

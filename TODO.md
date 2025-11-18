@@ -1,6 +1,6 @@
 # TODO - Suivi du développement
 
-**Progression globale:** 12/19 items OBLIGATOIRES complétés (63.2%)
+**Progression globale:** 13/19 items OBLIGATOIRES complétés (68.4%)
 
 ---
 
@@ -36,7 +36,7 @@
 
 ---
 
-## Phase 2 - CRUD et contextualisation (1/5 - 20% EN ATTENTE)
+## Phase 2 - CRUD et contextualisation (2/5 - 40% EN ATTENTE)
 
 - [x] **#12** Contrôleur CRUD complet pour Showcase (OBLIGATOIRE)
   - Généré avec `php bin/console make:crud Showcase`
@@ -44,8 +44,15 @@
   - Formulaires pour création/édition avec ShowcaseType
   - Templates Bootstrap améliorés avec design moderne
   - Lien ajouté dans la navbar principale
+
+- [x] **#13** Fonctions CRUD pour Project (OBLIGATOIRE)
+  - ProjectController créé avec toutes les méthodes CRUD
+  - ProjectType avec 8 champs (title, description, status, dates, portfolio, members, showcases)
+  - Templates Bootstrap: index (grille de cartes), show (détail complet), new/edit (formulaires)
+  - Affichage des membres et tâches sur la page de détail
+  - Lien "Projets" ajouté dans la navbar
   
-- [ ] **#13** Fonctions CRUD pour Project (OBLIGATOIRE)
+- [ ] **#14** Consultation des Projects depuis les Showcases publiques (OBLIGATOIRE)
   - Ajouter new, edit, delete à ProjectController
   - Créer ProjectType pour les formulaires
   - Validation des données
@@ -212,5 +219,5 @@ php bin/console dbal:run-sql "SELECT COUNT(*) FROM showcase"   # Résultat: 3
 ---
 
 **Dernière mise à jour:** 18 novembre 2025  
-**Version:** 1.2 - Phase 1 complète + Showcase CRUD (Phase 2 #12)  
-**Statut:** 11/11 Phase 1 | 1/5 Phase 2 | 0/3 Phase 3 | 0/6 Bonus
+**Version:** 1.3 - Phase 2 en cours (Showcase + Project CRUD)  
+**Statut:** 11/11 Phase 1 | 2/5 Phase 2 | 0/3 Phase 3 | 0/6 Bonus

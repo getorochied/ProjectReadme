@@ -1,0 +1,62 @@
+{{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-12 mb-3">
+            {{ form_label(form.title) }}
+            {{ form_widget(form.title) }}
+            {{ form_errors(form.title) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 mb-3">
+            {{ form_label(form.description) }}
+            {{ form_widget(form.description) }}
+            {{ form_errors(form.description) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            {{ form_label(form.status) }}
+            {{ form_widget(form.status) }}
+            {{ form_errors(form.status) }}
+        </div>
+        <div class="col-md-6 mb-3">
+            {{ form_label(form.portfolio) }}
+            {{ form_widget(form.portfolio) }}
+            {{ form_errors(form.portfolio) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            {{ form_label(form.startDate) }}
+            {{ form_widget(form.startDate) }}
+            {{ form_errors(form.startDate) }}
+        </div>
+        <div class="col-md-6 mb-3">
+            {{ form_label(form.endDate) }}
+            {{ form_widget(form.endDate) }}
+            {{ form_errors(form.endDate) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            {{ form_label(form.members) }}
+            {{ form_widget(form.members) }}
+            {{ form_errors(form.members) }}
+            <small class="form-text text-muted">Maintenez Ctrl (Cmd sur Mac) pour sélectionner plusieurs membres</small>
+        </div>
+        <div class="col-md-6 mb-3">
+            {{ form_label(form.showcases) }}
+            {{ form_widget(form.showcases) }}
+            {{ form_errors(form.showcases) }}
+            <small class="form-text text-muted">Showcases dans lesquelles ce projet apparaît</small>
+        </div>
+    </div>
+
+    <button class="btn btn-primary btn-lg">
+        <i class="fas fa-save me-2"></i>{{ button_label|default('Enregistrer') }}
+    </button>
+{{ form_end(form) }}
