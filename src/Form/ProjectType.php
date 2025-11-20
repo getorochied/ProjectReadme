@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class ProjectType extends AbstractType
 {
@@ -56,7 +57,8 @@ class ProjectType extends AbstractType
                 'class' => Portfolio::class,
                 'choice_label' => 'description',
                 'label' => 'Portfolio',
-                'attr' => ['class' => 'form-select']
+                'attr' => ['class' => 'form-select'],
+                'disabled' => true
             ])
             ->add('members', EntityType::class, [
                 'class' => User::class,
@@ -73,6 +75,16 @@ class ProjectType extends AbstractType
                 'label' => 'Showcases associées',
                 'attr' => ['class' => 'form-select'],
                 'required' => false
+            ])
+            ->add('imageFile', VichImageType::class, [
+                'label' => 'Image du projet',
+                'required' => false,
+                'allow_delete' => true,
+                'delete_label' => 'Supprimer l\'image',
+                'download_label' => 'Télécharger',
+                'download_uri' => true,
+                'image_uri' => true,
+                'attr' => ['class' => 'form-control']
             ])
         ;
     }

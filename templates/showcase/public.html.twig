@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Showcases Publiques{% endblock %}
+
+{% block body %}
+    <div class="container mt-5 pt-5">
+        <div class="text-center mb-5">
+            <h1 class="text-uppercase mb-3">Showcases Publiques</h1>
+            <p class="lead">Découvrez les galeries de projets de la communauté MiNET</p>
+        </div>
+
+        {% if showcases|length > 0 %}
+            <div class="row">
+                {% for showcase in showcases %}
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card h-100 shadow">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="card-title mb-0">
+                                    {{ showcase.title }}
+                                    <span class="badge bg-light text-success float-end">
+                                        <i class="fas fa-globe me-1"></i>Public
+                                    </span>
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">{{ showcase.description|length > 100 ? showcase.description|slice(0, 100) ~ '...' : showcase.description }}</p>
+                                <div class="mb-2">
+                                    <small class="text-muted">
+                                        <i class="fas fa-user me-1"></i>Par {{ showcase.owner.username }}
+                                    </small>
+                                </div>
+                                <p class="text-muted mb-0">
+                                    <i class="fas fa-project-diagram me-1"></i>
+                                    {{ showcase.projects|length }} projet(s)
+                                </p>
+                            </div>
+                            <div class="card-footer bg-light">
+                                <a href="{{ path('app_showcase_show', {'id': showcase.id}) }}" class="btn btn-sm btn-success w-100">
+                                    <i class="fas fa-eye me-1"></i>Découvrir cette showcase
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>
+                Aucune showcase publique disponible pour le moment.
+            </div>
+        {% endif %}
+
+        <div class="text-center mt-5">
+            <p class="text-muted">
+                <i class="fas fa-info-circle me-2"></i>
+                Seules les showcases marquées comme publiques sont affichées ici.
+            </p>
+        </div>
+    </div>
+{% endblock %}

@@ -42,6 +42,13 @@
             Projets ({{ portfolio.projects|length }})
         </h3>
         
+        <!-- New Project Button -->
+        <div class="text-center mb-4">
+            <a href="{{ path('app_project_new', {'id': portfolio.id}) }}" class="btn btn-success btn-lg">
+                <i class="fas fa-plus me-2"></i>Créer un nouveau projet
+            </a>
+        </div>
+        
         <!-- Projects List -->
         {% if portfolio.projects|length > 0 %}
             <div class="row">
@@ -141,9 +148,15 @@
         
         <!-- Back Button -->
         <div class="text-center mt-5">
-            <a href="{{ path('app_portfolio_index') }}" class="btn btn-primary btn-xl">
-                <i class="fas fa-arrow-left"></i> Retour aux portfolios
-            </a>
+            {% if portfolio.owner %}
+                <a href="{{ path('app_user_show', {'id': portfolio.owner.id}) }}" class="btn btn-primary btn-xl">
+                    <i class="fas fa-arrow-left"></i> Retour au profil de {{ portfolio.owner.username }}
+                </a>
+            {% else %}
+                <a href="{{ path('app_portfolio_index') }}" class="btn btn-primary btn-xl">
+                    <i class="fas fa-arrow-left"></i> Retour aux portfolios
+                </a>
+            {% endif %}
         </div>
     </div>
 </section>

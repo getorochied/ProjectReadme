@@ -29,6 +29,11 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item mx-0 mx-lg-1">
+                        <a class="nav-link py-3 px-0 px-lg-3 rounded" href="{{ path('app_showcase_public') }}">
+                            <i class="fas fa-globe me-1"></i>Showcases Publiques
+                        </a>
+                    </li>
+                    <li class="nav-item mx-0 mx-lg-1">
                         <a class="nav-link py-3 px-0 px-lg-3 rounded" href="{{ path('app_portfolio_index') }}">
                             <i class="fas fa-folder-open me-1"></i>Portfolios
                         </a>
@@ -45,9 +50,27 @@
                     </li>
                     <li class="nav-item mx-0 mx-lg-1">
                         <a class="nav-link py-3 px-0 px-lg-3 rounded" href="{{ path('app_showcase_index') }}">
-                            <i class="fas fa-image me-1"></i>Showcases
+                            <i class="fas fa-image me-1"></i>Toutes les Showcases
                         </a>
                     </li>
+                    {% if app.user %}
+                        <li class="nav-item mx-0 mx-lg-1">
+                            <span class="nav-link py-3 px-0 px-lg-3 text-white">
+                                <i class="fas fa-user me-1"></i>{{ app.user.username }}
+                            </span>
+                        </li>
+                        <li class="nav-item mx-0 mx-lg-1">
+                            <a class="nav-link py-3 px-0 px-lg-3 rounded" href="{{ path('app_logout') }}">
+                                <i class="fas fa-sign-out-alt me-1"></i>Déconnexion
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item mx-0 mx-lg-1">
+                            <a class="nav-link py-3 px-0 px-lg-3 rounded" href="{{ path('app_login') }}">
+                                <i class="fas fa-sign-in-alt me-1"></i>Connexion
+                            </a>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
