@@ -48,8 +48,8 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        // Redirect to portfolio index after successful login
-        return new RedirectResponse($this->urlGenerator->generate('app_portfolio_index'));
+        // Redirect to dashboard after successful login
+        return new RedirectResponse($this->urlGenerator->generate('app_dashboard'));
     }
 
     protected function getLoginUrl(Request $request): string

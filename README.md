@@ -45,6 +45,7 @@ Application Symfony de gestion de portfolios de projets pour l'association MiNET
 | `/` | Redirection automatique vers `/portfolio` |
 | `/login` | **Connexion** (orchidium@minet.net / 123456) |
 | `/logout` | **Déconnexion** (redirige vers /portfolio) |
+| `/dashboard` | **Dashboard personnalisé** - Statistiques et actions rapides (authentification requise) |
 | `/portfolio` | Liste de tous les portfolios |
 | `/portfolio/{id}` | Détail d'un portfolio avec ses projets |
 | `/portfolio/{id}/project/new` | **Création projet** (authentification requise) |
@@ -144,7 +145,15 @@ php bin/console cache:clear
 | **Phase 1** - Modèle & consultation | 100% | 11/11 |
 | **Phase 2** - CRUD & contextualisation | 100% | 5/5 |
 | **Phase 3** - Auth & médias | 100% | 3/3 |
-| **Bonus** - Améliorations | 83% | 5/6 |
+| **Bonus** - Améliorations | 100% | 6/6 |
+
+### Fonctionnalités bonus implémentées
+- ✅ #20 - Contextualisation création showcase par user
+- ✅ #21 - Ajout contextuel projet à showcase
+- ✅ #22 - Messages flash pour opérations CRUD
+- ✅ #23 - Système de favoris/marque-pages (session)
+- ✅ #24 - Protection Voters (ownership-based)
+- ✅ #25 - Dashboard personnalisé avec statistiques
 
 
 ## Authentification et sécurité

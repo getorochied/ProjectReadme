@@ -1,18 +1,15 @@
 # TODO - Suivi du développement
 
-**Progression globale:** 19/19 items OBLIGATOIRES complétés (100% ✅)
+**Progression globale:** 19/19 items OBLIGATOIRES complétés (100%)
 
 ---
 
-## Phase 1 - Modèle de données et consultation (11/11 - 100% COMPLÉTÉE)
+## Phase 1 - Modèle de données et consultation (11/11 - 100%)
 
 - [x] **#1** Prise de connaissance du cahier des charges (OBLIGATOIRE)
 - [x] **#2** Initialisation du projet Symfony 7 LTS avec SQLite (OBLIGATOIRE)
 - [x] **#3** Gestion du code source avec Git (RECOMMANDÉ)
 - [x] **#4** Entités Portfolio et Project avec association 1-N (OBLIGATOIRE)
-  - [x] #4.1 Entité Portfolio (ex-[inventaire])
-  - [x] #4.2 Entité Project (ex-[objet])
-  - [x] #4.3 Association 1-N entre Portfolio et Project
 - [x] **#5** DataFixtures pour données de test (OBLIGATOIRE)
 - [x] **#6** Pages front-office de consultation (OBLIGATOIRE)
   - Liste de tous les portfolios
@@ -27,7 +24,7 @@
 
 ---
 
-## Phase 2 - CRUD et contextualisation (5/5 - 100% COMPLÉTÉE)
+## Phase 2 - CRUD et contextualisation (5/5 - 100%)
 
 - [x] **#12** Contrôleur CRUD complet pour Showcase (OBLIGATOIRE)
 - [x] **#13** Fonctions CRUD pour Project (OBLIGATOIRE)
@@ -37,7 +34,7 @@
 
 ---
 
-## Phase 3 - Authentification et médias (3/3 - 100% COMPLÉTÉE)
+## Phase 3 - Authentification et médias (3/3 - 100%)
 
 - [x] **#17** Upload d'images pour les Projects (OBLIGATOIRE)
 - [x] **#18** Système d'authentification Symfony (OBLIGATOIRE)
@@ -45,17 +42,15 @@
 
 ---
 
-## Optionnel - Améliorations (5/6 - BONUS)
+## Optionnel - Améliorations (6/6 - BONUS 100%)
 
 - [x] **#20** Contextualisation création Showcase par User
 - [x] **#21** Contextualisation ajout Project à Showcase
 - [x] **#22** Messages flash pour les opérations CRUD
 - [x] **#23** Système de marque-pages/panier dans le front-office
 - [x] **#24** Protection d'accès aux données (propriétaires uniquement)
-- [ ] **#25** Chargement contextuel selon utilisateur connecté
-  - Dashboard personnalisé après login
-  - Afficher uniquement les projets de l'utilisateur
-  - Statistiques personnalisées
+- [x] **#25** Chargement contextuel selon utilisateur connecté
+
 
 ---
 

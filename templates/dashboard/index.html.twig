@@ -1,0 +1,226 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard - {{ user.username }}{% endblock %}
+
+{% block body %}
+    <div class="container mt-5 pt-5">
+        {# En-tête du dashboard #}
+        <div class="row mb-4">
+            <div class="col">
+                <h1 class="display-4">
+                    <i class="fas fa-tachometer-alt me-3"></i>
+                    Bonjour, {{ user.username }} !
+                </h1>
+                <p class="lead text-muted">Bienvenue sur votre tableau de bord personnalisé</p>
+            </div>
+        </div>
+
+        {# Cartes de statistiques #}
+        <div class="row mb-5">
+            <div class="col-md-3 mb-3">
+                <div class="card text-center shadow-sm h-100">
+                    <div class="card-body">
+                        <i class="fas fa-project-diagram fa-3x text-primary mb-3"></i>
+                        <h3 class="card-title display-4">{{ stats.totalProjects }}</h3>
+                        <p class="card-text text-muted">Projet{{ stats.totalProjects > 1 ? 's' : '' }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-3">
+                <div class="card text-center shadow-sm h-100">
+                    <div class="card-body">
+                        <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
+                        <h3 class="card-title display-4">{{ stats.completedProjects }}</h3>
+                        <p class="card-text text-muted">Terminé{{ stats.completedProjects > 1 ? 's' : '' }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-3">
+                <div class="card text-center shadow-sm h-100">
+                    <div class="card-body">
+                        <i class="fas fa-spinner fa-3x text-warning mb-3"></i>
+                        <h3 class="card-title display-4">{{ stats.inProgressProjects }}</h3>
+                        <p class="card-text text-muted">En cours</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-3">
+                <div class="card text-center shadow-sm h-100">
+                    <div class="card-body">
+                        <i class="fas fa-star fa-3x text-info mb-3"></i>
+                        <h3 class="card-title display-4">{{ stats.totalShowcases }}</h3>
+                        <p class="card-text text-muted">Showcase{{ stats.totalShowcases > 1 ? 's' : '' }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Actions rapides #}
+        <div class="row mb-5">
+            <div class="col">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-bolt me-2"></i>
+                            Actions rapides
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-3 mb-md-0">
+                                {% if portfolio %}
+                                    <a href="{{ path('app_project_new', {'id': portfolio.id}) }}" class="btn btn-success btn-lg w-100">
+                                        <i class="fas fa-plus-circle me-2"></i>
+                                        Nouveau Projet
+                                    </a>
+                                {% else %}
+                                    <button class="btn btn-secondary btn-lg w-100" disabled>
+                                        <i class="fas fa-exclamation-triangle me-2"></i>
+                                        Pas de portfolio
+                                    </button>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-4 mb-3 mb-md-0">
+                                <a href="{{ path('app_showcase_new') }}" class="btn btn-info btn-lg w-100">
+                                    <i class="fas fa-plus-circle me-2"></i>
+                                    Nouvelle Showcase
+                                </a>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <a href="{{ path('app_project_index') }}" class="btn btn-outline-primary btn-lg w-100">
+                                    <i class="fas fa-search me-2"></i>
+                                    Parcourir Projets
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Projets récents #}
+        <div class="row mb-5">
+            <div class="col">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-clock me-2"></i>
+                            Mes projets récents
+                        </h5>
+                        {% if portfolio %}
+                            <a href="{{ path('app_portfolio_show', {'id': portfolio.id}) }}" class="btn btn-sm btn-outline-light">
+                                Voir tout
+                            </a>
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        {% if recentProjects is empty %}
+                            <div class="alert alert-info mb-0">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Vous n'avez pas encore de projets. Commencez par en créer un !
+                            </div>
+                        {% else %}
+                            <div class="row">
+                                {% for project in recentProjects %}
+                                    <div class="col-md-4 mb-3">
+                                        <div class="card h-100 shadow-sm">
+                                            {% if project.imageName %}
+                                                <img src="{{ vich_uploader_asset(project, 'imageFile') }}" 
+                                                     class="card-img-top" 
+                                                     alt="{{ project.title }}"
+                                                     style="height: 200px; object-fit: cover;">
+                                            {% else %}
+                                                <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" 
+                                                     style="height: 200px;">
+                                                    <i class="fas fa-image fa-3x text-white"></i>
+                                                </div>
+                                            {% endif %}
+                                            
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ project.title }}</h5>
+                                                <p class="card-text text-muted small">
+                                                    {{ project.description|length > 100 ? project.description|slice(0, 100) ~ '...' : project.description }}
+                                                </p>
+                                                <span class="badge {% if project.status == 'not_started' %}bg-secondary{% elseif project.status == 'in_progress' %}bg-warning text-dark{% elseif project.status == 'completed' %}bg-success{% elseif project.status == 'on_hold' %}bg-info{% else %}bg-dark{% endif %}">
+                                                    {{ project.status|replace({'_': ' '})|title }}
+                                                </span>
+                                            </div>
+                                            
+                                            <div class="card-footer bg-transparent">
+                                                <div class="d-flex justify-content-between">
+                                                    <a href="{{ path('app_project_show', {'id': project.id}) }}" class="btn btn-sm btn-outline-primary">
+                                                        <i class="fas fa-eye me-1"></i>
+                                                        Voir
+                                                    </a>
+                                                    <a href="{{ path('app_project_edit', {'id': project.id}) }}" class="btn btn-sm btn-outline-secondary">
+                                                        <i class="fas fa-edit me-1"></i>
+                                                        Éditer
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Mes showcases #}
+        <div class="row mb-5">
+            <div class="col">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-star me-2"></i>
+                            Mes showcases
+                        </h5>
+                        <a href="{{ path('app_showcase_new') }}" class="btn btn-sm btn-outline-light">
+                            <i class="fas fa-plus me-1"></i>
+                            Nouvelle
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        {% if showcases is empty %}
+                            <div class="alert alert-info mb-0">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Vous n'avez pas encore de showcases. Créez-en une pour mettre en valeur vos projets !
+                            </div>
+                        {% else %}
+                            <div class="list-group">
+                                {% for showcase in showcases %}
+                                    <a href="{{ path('app_showcase_show', {'id': showcase.id}) }}" 
+                                       class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1">
+                                                <i class="fas fa-star text-warning me-2"></i>
+                                                {{ showcase.title }}
+                                            </h6>
+                                            <p class="mb-1 text-muted small">{{ showcase.description|slice(0, 80) }}{{ showcase.description|length > 80 ? '...' : '' }}</p>
+                                            <small class="text-muted">
+                                                {{ showcase.projects|length }} projet{{ showcase.projects|length > 1 ? 's' : '' }}
+                                            </small>
+                                        </div>
+                                        <div>
+                                            <span class="badge {{ showcase.isPublic ? 'bg-success' : 'bg-warning text-dark' }} me-2">
+                                                {{ showcase.isPublic ? 'Publique' : 'Privée' }}
+                                            </span>
+                                            <i class="fas fa-chevron-right text-muted"></i>
+                                        </div>
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
