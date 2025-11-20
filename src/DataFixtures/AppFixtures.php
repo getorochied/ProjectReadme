@@ -26,9 +26,9 @@ class AppFixtures extends Fixture
      */
     private function usersGenerator()
     {
-        yield ['olivier', 'olivier@localhost', '123456'];
-        yield ['gustave', 'gustave@localhost', '123456'];
-        yield ['alice', 'alice@localhost', '123456'];
+        yield ['orchidium', 'orchidium@minet.net', '123456'];
+        yield ['liteapp', 'liteapp@minet.net', '123456'];
+        yield ['andinoxis', 'andinoxis@minet.net', '123456'];
     }
 
     public function load(ObjectManager $manager): void
@@ -57,9 +57,9 @@ class AppFixtures extends Fixture
         $manager->flush();
         
         // Utiliser les portfolios personnels des users
-        $portfolio1 = $portfolios['olivier'];  // Portfolio d'Olivier
-        $portfolio2 = $portfolios['gustave'];  // Portfolio de Gustave
-        // $portfolios['alice'] existe aussi mais n'a pas encore de projets
+        $portfolio1 = $portfolios['orchidium'];  // Portfolio d'Orchidium
+        $portfolio2 = $portfolios['liteapp'];  // Portfolio de Liteapp
+        // $portfolios['andinoxis'] existe aussi mais n'a pas encore de projets
 
         // Projet 1 : Serveur de stockage des logs
         $project1 = new Project();
@@ -69,8 +69,8 @@ class AppFixtures extends Fixture
         $project1->setStartDate(new \DateTime('2025-01-15'));
         $project1->setPortfolio($portfolio1);
         // Ajouter les contributeurs
-        $project1->addMember($users['olivier']);
-        $project1->addMember($users['gustave']);
+        $project1->addMember($users['orchidium']);
+        $project1->addMember($users['liteapp']);
         $manager->persist($project1);
 
         // Tasks pour Projet 1
@@ -105,8 +105,8 @@ class AppFixtures extends Fixture
         $project2->setStatus("not_started");
         $project2->setPortfolio($portfolio1);
         // Ajouter les contributeurs
-        $project2->addMember($users['olivier']);
-        $project2->addMember($users['alice']);
+        $project2->addMember($users['orchidium']);
+        $project2->addMember($users['andinoxis']);
         $manager->persist($project2);
 
         // Tasks pour Projet 2
@@ -133,7 +133,7 @@ class AppFixtures extends Fixture
         $project3->setEndDate(new \DateTime('2024-12-15'));
         $project3->setPortfolio($portfolio2);
         // Ajouter les contributeurs
-        $project3->addMember($users['gustave']);
+        $project3->addMember($users['liteapp']);
         $manager->persist($project3);
 
         // Tasks pour Projet 3 (toutes terminées)
@@ -166,8 +166,8 @@ class AppFixtures extends Fixture
         $project4->setStartDate(new \DateTime('2025-02-01'));
         $project4->setPortfolio($portfolio2);
         // Ajouter les contributeurs
-        $project4->addMember($users['gustave']);
-        $project4->addMember($users['alice']);
+        $project4->addMember($users['liteapp']);
+        $project4->addMember($users['andinoxis']);
         $manager->persist($project4);
 
         // Tasks pour Projet 4
@@ -199,7 +199,7 @@ class AppFixtures extends Fixture
         $showcase1->setTitle("Projets Infrastructure 2025");
         $showcase1->setDescription("Vitrine des projets d'infrastructure en cours et terminés");
         $showcase1->setIsPublic(true);
-        $showcase1->setOwner($users['olivier']);
+        $showcase1->setOwner($users['orchidium']);
         $showcase1->addProject($project1);
         $showcase1->addProject($project2);
         $manager->persist($showcase1);
@@ -208,16 +208,16 @@ class AppFixtures extends Fixture
         $showcase2->setTitle("Développement Web");
         $showcase2->setDescription("Mes projets de développement web et d'APIs");
         $showcase2->setIsPublic(true);
-        $showcase2->setOwner($users['gustave']);
+        $showcase2->setOwner($users['liteapp']);
         $showcase2->addProject($project3);
         $showcase2->addProject($project4);
         $manager->persist($showcase2);
 
         $showcase3 = new Showcase();
-        $showcase3->setTitle("Projets en cours - Alice");
+        $showcase3->setTitle("Projets en cours - Andinoxis");
         $showcase3->setDescription("Galerie privée de mes projets actuels");
         $showcase3->setIsPublic(false);
-        $showcase3->setOwner($users['alice']);
+        $showcase3->setOwner($users['andinoxis']);
         $showcase3->addProject($project2);
         $showcase3->addProject($project4);
         $manager->persist($showcase3);

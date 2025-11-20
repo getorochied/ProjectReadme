@@ -29,11 +29,6 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item mx-0 mx-lg-1">
-                        <a class="nav-link py-3 px-0 px-lg-3 rounded" href="{{ path('app_showcase_public') }}">
-                            <i class="fas fa-globe me-1"></i>Showcases Publiques
-                        </a>
-                    </li>
-                    <li class="nav-item mx-0 mx-lg-1">
                         <a class="nav-link py-3 px-0 px-lg-3 rounded" href="{{ path('app_portfolio_index') }}">
                             <i class="fas fa-folder-open me-1"></i>Portfolios
                         </a>
@@ -44,13 +39,22 @@
                         </a>
                     </li>
                     <li class="nav-item mx-0 mx-lg-1">
+                        <a class="nav-link py-3 px-0 px-lg-3 rounded" href="{{ path('app_showcase_index') }}">
+                            <i class="fas fa-image me-1"></i>Showcases
+                        </a>
+                    </li>
+                    <li class="nav-item mx-0 mx-lg-1">
                         <a class="nav-link py-3 px-0 px-lg-3 rounded" href="{{ path('app_user_index') }}">
                             <i class="fas fa-users me-1"></i>Utilisateurs
                         </a>
                     </li>
                     <li class="nav-item mx-0 mx-lg-1">
-                        <a class="nav-link py-3 px-0 px-lg-3 rounded" href="{{ path('app_showcase_index') }}">
-                            <i class="fas fa-image me-1"></i>Toutes les Showcases
+                        {% set favCount = app.request.session.get('favorites', [])|length %}
+                        <a class="nav-link py-3 px-0 px-lg-3 rounded" href="{{ path('app_favorites_index') }}">
+                            <i class="fas fa-heart me-1"></i>Favoris
+                            {% if favCount > 0 %}
+                                <span class="badge bg-danger rounded-pill">{{ favCount }}</span>
+                            {% endif %}
                         </a>
                     </li>
                     {% if app.user %}
@@ -77,6 +81,27 @@
     </nav>
 
     <br><br><br>
+
+    <!-- Flash Messages -->
+    <div class="container mt-4">
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ type == 'error' ? 'danger' : type }} alert-dismissible fade show" role="alert">
+                    {% if type == 'success' %}
+                        <i class="fas fa-check-circle me-2"></i>
+                    {% elseif type == 'error' %}
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                    {% elseif type == 'warning' %}
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                    {% elseif type == 'info' %}
+                        <i class="fas fa-info-circle me-2"></i>
+                    {% endif %}
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
 
     <!-- Content -->
     {% block body %}{% endblock %}

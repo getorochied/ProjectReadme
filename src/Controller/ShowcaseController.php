@@ -51,6 +51,8 @@ final class ShowcaseController extends AbstractController
             $entityManager->persist($showcase);
             $entityManager->flush();
 
+            $this->addFlash('success', sprintf('La showcase "%s" a été créée avec succès !', $showcase->getTitle()));
+
             return $this->redirectToRoute('app_showcase_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -74,14 +76,18 @@ final class ShowcaseController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_showcase_edit', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_USER')]
     public function edit(Request $request, Showcase $showcase, EntityManagerInterface $entityManager): Response
     {
+        // Vérifier que l'utilisateur est le propriétaire de la showcase
+        $this->denyAccessUnlessGranted('EDIT', $showcase);
+
         $form = $this->createForm(ShowcaseType::class, $showcase);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
+
+            $this->addFlash('success', sprintf('La showcase "%s" a été modifiée avec succès !', $showcase->getTitle()));
 
             return $this->redirectToRoute('app_showcase_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -93,12 +99,19 @@ final class ShowcaseController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_showcase_delete', methods: ['POST'])]
-    #[IsGranted('ROLE_USER')]
     public function delete(Request $request, Showcase $showcase, EntityManagerInterface $entityManager): Response
     {
+        // Vérifier que l'utilisateur est le propriétaire de la showcase
+        $this->denyAccessUnlessGranted('DELETE', $showcase);
+
+        $showcaseTitle = $showcase->getTitle();
+        
         if ($this->isCsrfTokenValid('delete'.$showcase->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($showcase);
             $entityManager->flush();
+            $this->addFlash('success', sprintf('La showcase "%s" a été supprimée avec succès.', $showcaseTitle));
+        } else {
+            $this->addFlash('error', 'Token CSRF invalide. La showcase n\'a pas été supprimée.');
         }
 
         return $this->redirectToRoute('app_showcase_index', [], Response::HTTP_SEE_OTHER);

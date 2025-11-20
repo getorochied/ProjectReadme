@@ -281,6 +281,14 @@ php bin/console make:registration-form
 
 # Reset password
 php bin/console make:reset-password
+
+# Hasher un mot de passe manuellement
+php bin/console security:hash-password
+
+# Exemple d'utilisation:
+# php bin/console security:hash-password
+# > Tapez le mot de passe: 123456
+# > Password hash: $2y$13$...
 ```
 
 ### Tests
@@ -362,11 +370,20 @@ git push origin main
 # Hasher un mot de passe
 php bin/console security:hash-password
 
-# Vérifier les vulnérabilités
+# Vérifier les vulnérabilités de sécurité
 composer audit
 
 # Mettre à jour les packages de sécurité
 composer update --with-dependencies
+
+# Voir la configuration de sécurité
+php bin/console debug:config security
+
+# Lister les firewalls configurés
+php bin/console debug:firewall
+
+# Tester les rôles et permissions
+php bin/console security:check
 ```
 
 ---
@@ -398,16 +415,36 @@ curl http://localhost:8000/
 # Tester avec headers complets
 curl -I http://localhost:8000/portfolio
 
-# Tester les routes
+# Tester les routes publiques
 curl http://localhost:8000/portfolio
 curl http://localhost:8000/user
 curl http://localhost:8000/portfolio/1
+curl http://localhost:8000/showcase
+
+# Tester l'authentification
+curl http://localhost:8000/login
+curl -I http://localhost:8000/portfolio/1/project/new  # Doit rediriger (302)
 
 # Suivre les redirections
 curl -L http://localhost:8000/
 
-# Voir uniquement les headers
-curl -I http://localhost:8000/portfolio
+# Voir uniquement le code HTTP
+curl -s -o /dev/null -w "%{http_code}\n" http://localhost:8000/login
+
+# Tester une route protégée (doit retourner 302)
+curl -s -o /dev/null -w "%{http_code}\n" http://localhost:8000/showcase/new
+
+# Tester showcase privée sans connexion (302)
+curl -s -o /dev/null -w "%{http_code}\n" http://localhost:8000/showcase/3
+
+# Test complet de toutes les routes
+echo "Routes publiques:" && \
+curl -s -o /dev/null -w "Portfolios: %{http_code}\n" http://localhost:8000/portfolio && \
+curl -s -o /dev/null -w "Projects: %{http_code}\n" http://localhost:8000/project && \
+curl -s -o /dev/null -w "Showcases: %{http_code}\n" http://localhost:8000/showcase && \
+echo "" && echo "Routes protégées (302 = OK):" && \
+curl -s -o /dev/null -w "New project: %{http_code}\n" http://localhost:8000/portfolio/1/project/new && \
+curl -s -o /dev/null -w "New showcase: %{http_code}\n" http://localhost:8000/showcase/new
 ```
 
 ---
@@ -462,5 +499,5 @@ php bin/console cache:clear
 
 ---
 
-**Dernière mise à jour:** 18 novembre 2025  
-**Version:** 1.0
+**Dernière mise à jour:** 20 novembre 2025  
+**Version:** 2.0 - Ajout commandes authentification et tests de sécurité

@@ -6,10 +6,28 @@
     <div class="container mt-5 pt-5">
         <div class="row mb-4">
             <div class="col">
-                <h1 class="display-4">{{ project.title }}</h1>
-                <span class="badge {% if project.status == 'not_started' %}bg-secondary{% elseif project.status == 'in_progress' %}bg-warning text-dark{% elseif project.status == 'completed' %}bg-success{% elseif project.status == 'on_hold' %}bg-info{% else %}bg-dark{% endif %} fs-5">
-                    {{ project.status|replace({'_': ' '})|title }}
-                </span>
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h1 class="display-4">{{ project.title }}</h1>
+                        <span class="badge {% if project.status == 'not_started' %}bg-secondary{% elseif project.status == 'in_progress' %}bg-warning text-dark{% elseif project.status == 'completed' %}bg-success{% elseif project.status == 'on_hold' %}bg-info{% else %}bg-dark{% endif %} fs-5">
+                            {{ project.status|replace({'_': ' '})|title }}
+                        </span>
+                    </div>
+                    
+                    {# Bouton Favoris #}
+                    {% set favoriteIds = app.request.session.get('favorites', []) %}
+                    {% set isFavorite = project.id in favoriteIds %}
+                    
+                    <form method="post" action="{{ path('app_favorites_toggle', {'id': project.id}) }}" class="d-inline">
+                        <input type="hidden" name="_token" value="{{ csrf_token('toggle-favorite' ~ project.id) }}">
+                        <button type="submit" 
+                                class="btn {{ isFavorite ? 'btn-danger' : 'btn-outline-danger' }} btn-lg"
+                                title="{{ isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris' }}">
+                            <i class="fas fa-heart me-2"></i>
+                            {{ isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris' }}
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
 
@@ -85,6 +103,78 @@
                         {% endif %}
                     </div>
                 {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if app.user %}
+            <div class="card mb-4 shadow-sm border-primary">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-plus-circle me-2"></i>Ajouter à une showcase
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% set user_showcases = [] %}
+                    {% for showcase in app.user.showcases %}
+                        {% set user_showcases = user_showcases|merge([showcase]) %}
+                    {% endfor %}
+
+                    {% if user_showcases|length > 0 %}
+                        <p class="mb-3">Sélectionnez une de vos showcases pour y ajouter ce projet :</p>
+                        <div class="row">
+                            {% for showcase in user_showcases %}
+                                <div class="col-md-6 mb-3">
+                                    <div class="card {{ project.showcases.contains(showcase) ? 'border-success' : '' }}">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div class="flex-grow-1">
+                                                    <h6 class="card-title mb-1">
+                                                        {{ showcase.title }}
+                                                        {% if project.showcases.contains(showcase) %}
+                                                            <i class="fas fa-check-circle text-success ms-2"></i>
+                                                        {% endif %}
+                                                    </h6>
+                                                    <p class="card-text small text-muted mb-2">
+                                                        {{ showcase.description|length > 60 ? showcase.description|slice(0, 60) ~ '...' : showcase.description }}
+                                                    </p>
+                                                    <span class="badge {{ showcase.isPublic ? 'bg-success' : 'bg-warning text-dark' }} me-1">
+                                                        {{ showcase.isPublic ? 'Public' : 'Privé' }}
+                                                    </span>
+                                                    <span class="badge bg-secondary">
+                                                        {{ showcase.projects|length }} projet{{ showcase.projects|length > 1 ? 's' : '' }}
+                                                    </span>
+                                                </div>
+                                                <div class="ms-2">
+                                                    {% if not project.showcases.contains(showcase) %}
+                                                        <form method="post" action="{{ path('app_project_add_to_showcase', {
+                                                            'projectId': project.id,
+                                                            'showcaseId': showcase.id
+                                                        }) }}" class="d-inline">
+                                                            <input type="hidden" name="_token" value="{{ csrf_token('add-to-showcase' ~ project.id) }}">
+                                                            <button type="submit" class="btn btn-sm btn-primary" title="Ajouter à cette showcase">
+                                                                <i class="fas fa-plus"></i>
+                                                            </button>
+                                                        </form>
+                                                    {% else %}
+                                                        <span class="badge bg-success">Déjà ajouté</span>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info mb-0">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Vous n'avez pas encore de showcase. 
+                            <a href="{{ path('app_user_show', {'id': app.user.id}) }}" class="alert-link">
+                                Créez-en une maintenant !
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
         {% endif %}
 

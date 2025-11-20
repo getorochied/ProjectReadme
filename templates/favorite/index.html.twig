@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes Favoris{% endblock %}
+
+{% block body %}
+    <div class="container mt-5 pt-5">
+        <div class="row mb-4">
+            <div class="col">
+                <h1 class="display-4">
+                    <i class="fas fa-heart text-danger me-3"></i>Mes Projets Favoris
+                </h1>
+                <p class="lead text-muted">
+                    Vous avez {{ count }} projet{{ count > 1 ? 's' : '' }} en favoris
+                </p>
+            </div>
+        </div>
+
+        {% if favorites|length > 0 %}
+            <div class="row mb-4">
+                <div class="col">
+                    <form method="post" action="{{ path('app_favorites_clear') }}" class="d-inline" 
+                          onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer tous vos favoris ?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('clear-favorites') }}">
+                        <button type="submit" class="btn btn-outline-danger">
+                            <i class="fas fa-trash me-2"></i>Vider tous les favoris
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="row">
+                {% for project in favorites %}
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            {% if project.imageName %}
+                                <img src="{{ vich_uploader_asset(project, 'imageFile') }}" 
+                                     class="card-img-top" 
+                                     alt="{{ project.title }}"
+                                     style="height: 200px; object-fit: cover;">
+                            {% else %}
+                                <div class="bg-secondary text-white d-flex align-items-center justify-content-center" 
+                                     style="height: 200px;">
+                                    <i class="fas fa-project-diagram fa-3x"></i>
+                                </div>
+                            {% endif %}
+                            
+                            <div class="card-body">
+                                <h5 class="card-title">{{ project.title }}</h5>
+                                <p class="card-text text-muted">
+                                    {{ project.description|length > 100 ? project.description|slice(0, 100) ~ '...' : project.description }}
+                                </p>
+                                
+                                <div class="mb-2">
+                                    <span class="badge {% if project.status == 'not_started' %}bg-secondary{% elseif project.status == 'in_progress' %}bg-warning text-dark{% elseif project.status == 'completed' %}bg-success{% else %}bg-info{% endif %}">
+                                        {{ project.status|replace({'_': ' '})|title }}
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="card-footer bg-transparent border-top-0">
+                                <div class="d-flex justify-content-between">
+                                    <a href="{{ path('app_project_show', {'id': project.id}) }}" 
+                                       class="btn btn-sm btn-primary">
+                                        <i class="fas fa-eye me-1"></i>Voir
+                                    </a>
+                                    
+                                    <form method="post" action="{{ path('app_favorites_toggle', {'id': project.id}) }}" class="d-inline">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('toggle-favorite' ~ project.id) }}">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Retirer des favoris">
+                                            <i class="fas fa-heart-broken me-1"></i>Retirer
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                <h4 class="alert-heading">
+                    <i class="fas fa-info-circle me-2"></i>Aucun favori pour le moment
+                </h4>
+                <p class="mb-0">
+                    Vous n'avez pas encore de projets favoris. 
+                    <a href="{{ path('app_project_index') }}" class="alert-link">
+                        Parcourez les projets
+                    </a> 
+                    et ajoutez-en à vos favoris en cliquant sur le bouton 
+                    <i class="fas fa-heart text-danger"></i> !
+                </p>
+            </div>
+        {% endif %}
+
+        <div class="mt-4">
+            <a href="{{ path('app_project_index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Retour aux projets
+            </a>
+        </div>
+    </div>
+{% endblock %}

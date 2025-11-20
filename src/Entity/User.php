@@ -50,9 +50,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable: false)]
     private ?Portfolio $portfolio = null;
 
+    /**
+     * @var Collection<int, Showcase>
+     */
+    #[ORM\OneToMany(targetEntity: Showcase::class, mappedBy: 'owner')]
+    private Collection $showcases;
+
     public function __construct()
     {
         $this->projects = new ArrayCollection();
+        $this->showcases = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -172,6 +179,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPortfolio(Portfolio $portfolio): static
     {
         $this->portfolio = $portfolio;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Showcase>
+     */
+    public function getShowcases(): Collection
+    {
+        return $this->showcases;
+    }
+
+    public function addShowcase(Showcase $showcase): static
+    {
+        if (!$this->showcases->contains($showcase)) {
+            $this->showcases->add($showcase);
+            $showcase->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeShowcase(Showcase $showcase): static
+    {
+        if ($this->showcases->removeElement($showcase)) {
+            // set the owning side to null (unless already changed)
+            if ($showcase->getOwner() === $this) {
+                $showcase->setOwner(null);
+            }
+        }
 
         return $this;
     }

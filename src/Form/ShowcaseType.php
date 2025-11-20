@@ -31,12 +31,6 @@ class ShowcaseType extends AbstractType
                 'required' => false,
                 'attr' => ['class' => 'form-check-input']
             ])
-            ->add('owner', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'username',
-                'label' => 'Propriétaire',
-                'attr' => ['class' => 'form-select']
-            ])
             ->add('projects', EntityType::class, [
                 'class' => Project::class,
                 'choice_label' => 'title',
@@ -46,12 +40,23 @@ class ShowcaseType extends AbstractType
                 'required' => false
             ])
         ;
+
+        // Ajouter le champ owner seulement si disable_owner n'est pas activé
+        if (!$options['disable_owner']) {
+            $builder->add('owner', EntityType::class, [
+                'class' => User::class,
+                'choice_label' => 'username',
+                'label' => 'Propriétaire',
+                'attr' => ['class' => 'form-select']
+            ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Showcase::class,
+            'disable_owner' => false,
         ]);
     }
 }

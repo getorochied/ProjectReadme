@@ -25,7 +25,7 @@ class Showcase
     #[ORM\Column]
     private ?bool $isPublic = false;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(inversedBy: 'showcases')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $owner = null;
 
